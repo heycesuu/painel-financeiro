@@ -36,6 +36,7 @@ if uploaded_file:
     except:
         return 0.0
 
+
 df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
 
         # Exibir a tabela
