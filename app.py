@@ -78,8 +78,10 @@ if uploaded_file:
         # Gráfico de pizza por categoria
         st.subheader("📊 Gastos por Categoria")
         gastos_categoria = df_filtrado.groupby("Descrição")['Valor (R$)'].sum()
-        st.pyplot(gastos_categoria.plot.pie(autopct='%1.1f%%', figsize=(6,6), ylabel=''))
 
+        fig, ax = plt.subplots(figsize=(6, 6))
+        gastos_categoria.plot.pie(autopct='%1.1f%%', ylabel='', ax=ax)
+        st.pyplot(fig)
         # Total geral
         total = df_filtrado['Valor (R$)'].sum()
         total_formatado = f"R$ {total:,.2f}".replace(".", ",").replace(",", ".", 1)
