@@ -24,10 +24,4 @@ if uploaded_file:
         # 🧾 Leitura do arquivo
         df = pd.read_excel(
             uploaded_file,
-            engine="odf" if uploaded_file.name.endswith(".ods") else "openpyxl"
-        )
-
-        # 🔠 Corrige nomes das colunas (tira espaços extras)
-        df.columns = [col.strip() for col in df.columns]
-
-        # 🛠 Renomeia
+            engine="
