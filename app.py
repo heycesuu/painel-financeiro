@@ -45,19 +45,39 @@ if uploaded_file:
             except:
                 return 0.0
 
+df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
+
+# 🆕 Organiza os meses na ordem correta
+ordem_meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+               'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+
+df['Mês'] = pd.Categorical(df['Mês'], categories=ordem_meses, ordered=True)
+df = df.sort_values('Mês')
+# Filtros de Mês e Descrição
+st.sidebar.header("🔎 Filtros")
+
+meses_unicos = df['Mês'].dropna().unique()
+filtro_mes = st.sidebar.multiselect("Filtrar por mês:", options=meses_unicos, default=meses_unicos)
+
+categorias_unicas = df['Descrição'].dropna().unique()
+filtro_categoria = st.sidebar.multiselect("Filtrar por categoria:", options=categorias_unicas, default=categorias_unicas)
+
+# Aplica os filtros
+df_filtrado = df[(df['Mês'].isin(filtro_mes)) & (df['Descrição'].isin(filtro_categoria))]
+
         df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
 
         # Exibir a tabela
         st.subheader("📋 Tabela de Gastos")
-        st.dataframe(df)
+        st.dataframe(df_filtrado)
 
         # Agrupar por mês e mostrar gráfico
         st.subheader("📅 Gastos por Mês")
-        gastos_mes = df.groupby("Mês")['Valor (R$)'].sum().reset_index()
+        gastos_mes = df_filtrado.groupby("Mês")['Valor (R$)'].sum().reset_index()
         st.bar_chart(gastos_mes.set_index("Mês"))
 
         # Mostrar total geral
-        total = df['Valor (R$)'].sum()
+        total = df_filtrado['Valor (R$)'].sum()
         total_formatado = f"R$ {total:,.2f}".replace(".", ",").replace(",", ".", 1)
         st.metric("💰 Total Geral de Gastos", total_formatado)
 
