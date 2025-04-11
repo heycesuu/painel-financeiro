@@ -49,6 +49,9 @@ if uploaded_file:
         df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
 
         # Organiza meses na ordem correta
-        ordem_meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
-        df['Mês'] = pd.Categorical(df['Mês'], categories=ordem_m_
+ordem_meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+               'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+
+df['Mês'] = pd.Categorical(df['Mês'], categories=ordem_meses, ordered=True)
+df = df.sort_values('Mês')
+
