@@ -12,7 +12,10 @@ uploaded_file = st.file_uploader("Selecione sua planilha", type=["ods", "xlsx"])
 if uploaded_file:
     try:
         df = pd.read_excel(uploaded_file, engine="odf" if uploaded_file.name.endswith(".ods") else "openpyxl")
-        df.columns = [col.strip() for col in df.columns]  # Limpa espaços em branco
+        df.columns = [col.strip() for col in df.columns]  # Limpa espaços
+if 'Mês ' in df.columns:
+    df.rename(columns={'Mês ': 'Mês'}, inplace=True)
+
         
         # Corrige valores com vírgula e símbolo de R$
         df['Valor (R$)'] = (
@@ -30,8 +33,8 @@ if uploaded_file:
 
         # Total por mês
         st.subheader("📅 Gastos por Mês")
-        gastos_mes = df.groupby("Mês ")['Valor (R$)'].sum().reset_index()
-        st.bar_chart(gastos_mes.set_index("Mês "))
+        gastos_mes = df.groupby("Mês")['Valor (R$)'].sum().reset_index()
+st.bar_chart(gastos_mes.set_index("Mês"))
 
         # Total geral
         st.metric("💰 Total Geral de Gastos", f"R$ {df['Valor (R$)'].sum():,.2f}".replace('.', ',').replace(',', '.', 1))
