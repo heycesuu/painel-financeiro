@@ -46,4 +46,10 @@ if uploaded_file:
         # Mostrar total geral
         total = df['Valor (R$)'].sum()
         total_formatado = f"R$ {total:,.2f}".replace(".", ",").replace(",", ".", 1)
+        st.metric("💰 Total Geral de Gastos", total_formatado)
 
+    except Exception as e:
+        st.error(f"Ocorreu um erro ao processar o arquivo: {e}")
+
+else:
+    st.info("Faça o upload de uma planilha para começar.")
