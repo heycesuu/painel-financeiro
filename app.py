@@ -38,4 +38,5 @@ if uploaded_file:
         # Agrupar por mês e mostrar gráfico
         st.subheader("📅 Gastos por Mês")
         gastos_mes = df.groupby("Mês")['Valor (R$)'].sum().reset_index()
-        st.bar_chart(gastos_mes.set_index_
+        st.bar_chart(gastos_mes.set_index("Mês"))
+
