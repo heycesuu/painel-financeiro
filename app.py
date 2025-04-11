@@ -62,8 +62,15 @@ if uploaded_file:
         categorias_unicas = df['Descrição'].dropna().unique()
         filtro_categoria = st.sidebar.multiselect("Filtrar por categoria:", options=categorias_unicas, default=categorias_unicas)
 
-        # 🔍 Aplica os filtros
-        df_filtrado = df[(df['Mês'].isin(filtro_mes)) & (df['Descrição'].isin(filtro_categoria))]
+        # 🔍 Aplica os filtros com lógica mais flexível
+        df_filtrado = df.copy()
+
+        if filtro_mes:
+        df_filtrado = df_filtrado[df_filtrado['Mês'].isin(filtro_mes)]
+
+        if filtro_categoria:
+         df_filtrado = df_filtrado[df_filtrado['Descrição'].isin(filtro_categoria)]
+
 
         # 📋 Tabela
         st.subheader("📋 Tabela de Gastos")
