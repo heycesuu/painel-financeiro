@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import re
 
 st.set_page_config(page_title="Painel Financeiro", layout="wide")
 st.title("📊 Painel Financeiro")
@@ -25,14 +26,17 @@ if uploaded_file:
             df.rename(columns={'Mês ': 'Mês'}, inplace=True)
 
         # Trata os valores com vírgula, R$ e ponto de milhar
-        df['Valor (R$)'] = (
-    df['Valor (R$)']
-    .astype(str)
-    .str.replace('R$', '', regex=False)
-    .str.replace(',', '.', regex=False)  # transforma decimal
-    .str.replace('.', '', regex=False, n=1)  # remove 1º ponto (milhar)
-    .astype(float)
-)
+        def limpar_valor(valor):
+    if isinstance(valor, str):
+        valor = valor.replace('R$', '').strip()
+        valor = re.sub(r'\.(?=\d{3}(,|$))', '', valor)  # remove ponto só se for milhar
+        valor = valor.replace(',', '.')  # vírgula decimal vira ponto
+    try:
+        return float(valor)
+    except:
+        return 0.0
+
+df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
 
         # Exibir a tabela
         st.subheader("📋 Tabela de Gastos")
