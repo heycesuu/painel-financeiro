@@ -26,13 +26,13 @@ if uploaded_file:
 
         # Trata os valores com vírgula, R$ e ponto de milhar
         df['Valor (R$)'] = (
-            df['Valor (R$)']
-            .astype(str)
-            .str.replace('R$', '', regex=False)
-            .str.replace('.', '', regex=False)  # remove separador de milhar
-            .str.replace(',', '.', regex=False)  # troca vírgula decimal por ponto
-            .astype(float)
-        )
+    df['Valor (R$)']
+    .astype(str)
+    .str.replace('R$', '', regex=False)
+    .str.replace(',', '.', regex=False)  # transforma decimal
+    .str.replace('.', '', regex=False, n=1)  # remove 1º ponto (milhar)
+    .astype(float)
+)
 
         # Exibir a tabela
         st.subheader("📋 Tabela de Gastos")
