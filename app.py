@@ -38,8 +38,6 @@ def limpar_valor(valor):
 
 df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
 
-df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
-
         # Exibir a tabela
         st.subheader("📋 Tabela de Gastos")
         st.dataframe(df)
