@@ -25,8 +25,8 @@ if uploaded_file:
         if 'Mês ' in df.columns:
             df.rename(columns={'Mês ': 'Mês'}, inplace=True)
 
-        # Trata os valores com vírgula, R$ e ponto de milhar
-        def limpar_valor(valor):
+        # Trata os valores como vírgula, R$ e ponto de milhar
+def limpar_valor(valor):
     if isinstance(valor, str):
         valor = valor.replace('R$', '').strip()
         valor = re.sub(r'\.(?=\d{3}(,|$))', '', valor)  # remove ponto só se for milhar
@@ -36,6 +36,7 @@ if uploaded_file:
     except:
         return 0.0
 
+df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
 
 df['Valor (R$)'] = df['Valor (R$)'].apply(limpar_valor)
 
