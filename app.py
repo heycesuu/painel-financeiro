@@ -24,4 +24,5 @@ if uploaded_file:
         # 🧾 Leitura do arquivo
         df = pd.read_excel(
             uploaded_file,
-            engine="
+            engine="odf" if uploaded_file.name.endswith(".ods") else "openpyxl"
+
