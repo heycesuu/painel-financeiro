@@ -45,4 +45,5 @@ if uploaded_file:
 
         # Mostrar total geral
         total = df['Valor (R$)'].sum()
-        total_formatado = f"R$ {total:,.2f}".replace(".", ",").replace(",",_
+        total_formatado = f"R$ {total:,.2f}".replace(".", ",").replace(",", ".", 1)
+
