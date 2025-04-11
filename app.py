@@ -13,8 +13,17 @@ if uploaded_file:
     try:
         df = pd.read_excel(uploaded_file, engine="odf" if uploaded_file.name.endswith(".ods") else "openpyxl")
         df.columns = [col.strip() for col in df.columns]  # Limpa espaços em branco
-        df['Valor (R$)'] = df['Valor (R$)'].replace('[R$ ]', '', regex=True).astype(float)
         
+        # Corrige valores com vírgula e símbolo de R$
+        df['Valor (R$)'] = (
+            df['Valor (R$)']
+            .astype(str)
+            .str.replace('R$', '', regex=False)
+            .str.replace('.', '', regex=False)  # remove separador de milhar
+            .str.replace(',', '.', regex=False)  # troca vírgula decimal por ponto
+            .astype(float)
+        )
+
         # Exibir tabela
         st.subheader("📋 Tabela de Gastos")
         st.dataframe(df)
